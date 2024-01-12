@@ -17,10 +17,6 @@ public class Reserva {
         this.saida = saida;
     }
 
-    public Reserva() {
-
-    }
-
     public Integer getNumeroQuarto() {
         return numeroQuarto;
     }
@@ -42,20 +38,29 @@ public class Reserva {
         return TimeUnit.DAYS.convert(dif, TimeUnit.MILLISECONDS);
     }
 
-    public void atualizarData(Date entrada, Date saida) {
+    public String atualizarData(Date entrada, Date saida) {
+        Date agora = new Date();
+        if (entrada.before(agora) || saida.before(agora)) {
+            return " a reserva nao pode ser inferior a data atual";
+        }
+        if (!saida.after(entrada)) {
+            return " a data de saida deve ser posterior a data de chegada";
+        }
         this.entrada = entrada;
         this.saida = saida;
+
+        return null;
     }
 
     @Override
     public String toString() {
         return "Quarto: "
                 + numeroQuarto
-                + ", Entrada: "
+                + "| Entrada: "
                 + sdf.format(entrada)
-                + ", Saida: "
+                + "| Saida: "
                 + sdf.format(saida)
-                + ","
+                + "|"
                 + duracao()
                 + " Noites: ";
     }

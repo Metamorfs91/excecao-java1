@@ -27,7 +27,6 @@ public class App {
         } else {
             Reserva reserva = new Reserva(numero, entrada, saida);
             System.out.println("Reserva: " + reserva);
-
             System.out.println();
             System.out.println("Digite a data de entrada atualizada: ");
             System.out.print("Data de entrada: ");
@@ -35,16 +34,12 @@ public class App {
             System.out.print("Data de Saida: ");
             saida = sdf.parse(sc.next());
 
-            Date agora = new Date();
-            if (entrada.before(agora) || saida.before(agora)) {
-                System.out.println("Erro na reserva, a reserva nao pode ser inferior a data atual");
-            } else if (!saida.after(entrada)) {
-                System.out.println("Erro de reserva, a data de saida deve ser posterior a data de chegada");
+            String erro = reserva.atualizarData(entrada, saida);
+            if (erro != null) {
+                System.out.println("Erro na reserva: " + erro);
             } else {
-                reserva.atualizarData(entrada, saida);
                 System.out.println("Reserva: " + reserva);
             }
-
         }
         sc.close();
     }
