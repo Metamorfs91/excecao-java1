@@ -11,7 +11,11 @@ public class Reserva {
 
     private static SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
-    public Reserva(Integer numeroQuarto, Date entrada, Date saida) {
+    public Reserva(Integer numeroQuarto, Date entrada, Date saida) throws DominioExecao {
+
+        if (!saida.after(entrada)) {
+            throw new DominioExecao(" a data de saida deve ser posterior a data de chegada");
+        }
         this.numeroQuarto = numeroQuarto;
         this.entrada = entrada;
         this.saida = saida;
@@ -38,18 +42,15 @@ public class Reserva {
         return TimeUnit.DAYS.convert(dif, TimeUnit.MILLISECONDS);
     }
 
-    public String atualizarData(Date entrada, Date saida) {
+    public void atualizarData(Date entrada, Date saida) throws DominioExecao {
         Date agora = new Date();
         if (entrada.before(agora) || saida.before(agora)) {
-            return " a reserva nao pode ser inferior a data atual";
+            throw new DominioExecao(" a reserva nao pode ser inferior a data atual");
         }
-        if (!saida.after(entrada)) {
-            return " a data de saida deve ser posterior a data de chegada";
-        }
+
         this.entrada = entrada;
         this.saida = saida;
 
-        return null;
     }
 
     @Override
